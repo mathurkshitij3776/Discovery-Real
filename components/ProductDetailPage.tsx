@@ -1,10 +1,13 @@
 import React from 'react';
-import type { Product, Review } from '../types';
+import type { Product, Review, User } from '../types';
 import Badge from './Badge';
 import StarRating from './StarRating';
+import ReviewForm from './ReviewForm';
 
 interface ProductDetailPageProps {
   product: Product;
+  currentUser: User | null;
+  onReviewSubmit: (productId: string, reviewData: { rating: number; title: string; comment: string; }) => void;
 }
 
 const VerifiedIcon: React.FC = () => (
@@ -36,7 +39,12 @@ const ReviewCard: React.FC<{ review: Review }> = ({ review }) => (
     </div>
 );
 
-const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product }) => {
+const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product, currentUser, onReviewSubmit }) => {
+
+  const handleReviewSubmit = (reviewData: { rating: number; title: string; comment: string; }) => {
+    onReviewSubmit(product.id, reviewData);
+  }
+
   return (
     <div>
       <a href="#/" className="mb-6 inline-flex items-center text-brand-blue font-semibold hover:underline">
@@ -51,7 +59,10 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product }) => {
         <div className="flex flex-col md:flex-row md:items-start md:space-x-8">
           <img className="w-24 h-24 rounded-xl object-cover mb-4 md:mb-0" src={product.logoUrl} alt={`${product.name} logo`} />
           <div className="flex-1">
-            <h1 className="text-4xl font-bold text-brand-blue">{product.name}</h1>
+            <h1 className="text-4xl font-bold text-brand-blue flex items-center">
+                {product.name}
+                {product.madeIn === 'India' && <span className="ml-3 text-3xl" aria-label="Made in India">🇮🇳</span>}
+            </h1>
             <p className="mt-2 text-xl text-gray-600">{product.tagline}</p>
             <div className="mt-4 flex flex-wrap gap-2">
               {product.categories.map(category => <Badge key={category}>{category}</Badge>)}
@@ -103,6 +114,17 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product }) => {
         {/* Reviews */}
         <div className="mt-12">
           <h2 className="text-2xl font-bold text-brand-blue mb-6">Reviews ({product.reviewCount})</h2>
+          
+          <div className="mb-8">
+            {currentUser ? (
+              <ReviewForm onSubmit={handleReviewSubmit} user={currentUser} />
+            ) : (
+              <div className="bg-gray-50 p-4 rounded-lg text-center">
+                <p className="text-gray-600">Please <a href="#/login" className="font-semibold text-brand-blue hover:underline">log in</a> to leave a review.</p>
+              </div>
+            )}
+          </div>
+
           <div className="space-y-6">
             {product.reviews.map(review => <ReviewCard key={review.id} review={review} />)}
           </div>

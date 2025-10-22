@@ -9,7 +9,8 @@ interface ProductsPageProps {
 }
 
 const ProductsPage: React.FC<ProductsPageProps> = ({ products, onUpvote }) => {
-  const categories = [...new Set(products.flatMap(p => p.categories))].sort();
+  const approvedProducts = products.filter(p => p.status === 'approved');
+  const categories = [...new Set(approvedProducts.flatMap(p => p.categories))].sort();
 
   return (
     <div className="space-y-12">
@@ -19,13 +20,13 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ products, onUpvote }) => {
       </header>
       
       {categories.map(category => {
-        const productsInCategory = products.filter(p => p.categories.includes(category));
+        const productsInCategory = approvedProducts.filter(p => p.categories.includes(category));
         return (
           <section key={category} id={category.toLowerCase().replace(/\s+/g, '-')}>
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-brand-blue">{category}</h2>
             </div>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {productsInCategory.map(product => (
                 // FIX: Pass the `onUpvote` handler to `ProductCard` to fix missing prop error.
                 <ProductCard key={product.id} product={product} onUpvote={onUpvote} />

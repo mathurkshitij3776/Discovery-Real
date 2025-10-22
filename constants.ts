@@ -1,4 +1,4 @@
-import type { Product } from './types';
+import type { Product, Subscription } from './types';
 
 export const TODAY_LAUNCH_ID = 'craftnote';
 
@@ -10,10 +10,12 @@ export const PRODUCTS: Product[] = [
     description: 'CraftNote is a beautifully designed, minimalist writing application that focuses on what matters: your content. With full markdown support, a zen-like interface, and powerful organization features, it\'s the perfect tool for developers, writers, and thinkers who want to focus on their craft. Build your knowledge base, document your projects, or just jot down ideas without the clutter of traditional note-taking apps.',
     logoUrl: 'https://picsum.photos/id/1/200/200',
     websiteUrl: '#',
-    categories: ['Productivity', 'Developer Tools', 'Writing'],
+    categories: ['Productivity', 'Dev Tools', 'Writing Tools'],
     rating: 4.9,
     reviewCount: 102,
     upvotes: 256,
+    status: 'approved',
+    madeIn: 'India',
     deal: {
       title: 'Launch Week Special',
       description: 'Get 50% off your first year subscription, exclusively for Realpick users.',
@@ -56,10 +58,11 @@ export const PRODUCTS: Product[] = [
     description: 'Stop juggling screenshots and endless email chains. Pixel Perfect allows your team and clients to leave visual feedback and comments directly on live websites and web apps. It\'s the fastest way to iterate on design, fix bugs, and get approval, all in one place.',
     logoUrl: 'https://picsum.photos/id/2/200/200',
     websiteUrl: '#',
-    categories: ['Design', 'Collaboration', 'SaaS'],
+    categories: ['Design Tools', 'Utilities'],
     rating: 4.7,
     reviewCount: 245,
     upvotes: 189,
+    status: 'approved',
     gallery: [
       'https://picsum.photos/id/20/1280/720',
       'https://picsum.photos/id/21/1280/720',
@@ -84,10 +87,12 @@ export const PRODUCTS: Product[] = [
     description: 'QueryMaster is a powerful and intuitive SQL client designed for speed and collaboration. Featuring an intelligent autocomplete, query history, data visualization tools, and team sharing capabilities, it helps you write better queries, faster.',
     logoUrl: 'https://picsum.photos/id/3/200/200',
     websiteUrl: '#',
-    categories: ['Developer Tools', 'Data', 'SQL'],
+    categories: ['Dev Tools', 'Analytics & Data'],
     rating: 4.8,
     reviewCount: 88,
     upvotes: 215,
+    status: 'approved',
+    madeIn: 'India',
     deal: {
       title: 'Team Bundle',
       description: 'Get 3 seats for the price of 2 for your first year.',
@@ -119,10 +124,11 @@ export const PRODUCTS: Product[] = [
     description: 'Connect your favorite apps and automate repetitive tasks with FlowState. Our intuitive drag-and-drop interface lets you build complex workflows without writing a single line of code. From marketing automation to data entry, reclaim your time and focus on what matters.',
     logoUrl: 'https://picsum.photos/id/4/200/200',
     websiteUrl: '#',
-    categories: ['Automation', 'No-Code', 'Productivity'],
+    categories: ['No-Code / Low-Code', 'Productivity', 'Utilities'],
     rating: 4.6,
     reviewCount: 310,
     upvotes: 142,
+    status: 'approved',
     gallery: [
       'https://picsum.photos/id/40/1280/720',
       'https://picsum.photos/id/41/1280/720',
@@ -140,4 +146,29 @@ export const PRODUCTS: Product[] = [
       },
     ],
   },
+];
+
+// Mock data for user subscriptions
+export const SUBSCRIPTIONS: Subscription[] = [
+  {
+    subscriptionId: 'sub_1',
+    userId: 'jane@doe.com',
+    productId: 'craftnote',
+    purchaseDate: new Date(new Date().setDate(new Date().getDate() - 10)).toISOString(),
+    expiryDate: new Date(new Date().setMonth(new Date().getMonth() + 6)).toISOString(),
+  },
+  {
+    subscriptionId: 'sub_2',
+    userId: 'jane@doe.com',
+    productId: 'pixel-perfect',
+    purchaseDate: new Date(new Date().setDate(new Date().getDate() - 90)).toISOString(),
+    expiryDate: new Date(new Date().setDate(new Date().getDate() + 3)).toISOString(),
+  },
+  {
+    subscriptionId: 'sub_3',
+    userId: 'jane@doe.com',
+    productId: 'flowstate',
+    purchaseDate: new Date(new Date().setFullYear(new Date().getFullYear() - 1)).toISOString(),
+    expiryDate: new Date(new Date().setDate(new Date().getDate() - 5)).toISOString(),
+  }
 ];

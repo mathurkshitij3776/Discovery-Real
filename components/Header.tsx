@@ -76,6 +76,11 @@ const Header: React.FC<HeaderProps> = ({ categories, user, onLogout }) => {
                   </div>
                 </div>
               </div>
+              {user?.isAdmin && (
+                <a href="#/admin" className="text-red-600 hover:text-red-800 font-semibold transition-colors flex items-center">
+                  Admin
+                </a>
+              )}
             </nav>
           </div>
           
@@ -84,6 +89,8 @@ const Header: React.FC<HeaderProps> = ({ categories, user, onLogout }) => {
               {user ? (
                 <>
                   <span className="text-sm text-gray-600">Welcome, {user.name}!</span>
+                  {!user.isAdmin && <a href="#/dashboard" className="text-sm text-gray-500 hover:text-brand-blue font-semibold">My Dashboard</a>}
+                  <a href="#/my-submissions" className="text-sm text-gray-500 hover:text-brand-blue font-semibold">My Submissions</a>
                   <button onClick={onLogout} className="text-sm text-gray-500 hover:text-brand-blue font-semibold">Logout</button>
                   <a href="#/submit-product" className="bg-brand-accent text-brand-blue font-bold py-2 px-5 rounded-lg hover:opacity-90 transition-all text-sm">
                     Submit Product
@@ -129,17 +136,21 @@ const Header: React.FC<HeaderProps> = ({ categories, user, onLogout }) => {
 
               <div className="p-4 space-y-4">
                  {user ? (
-                    <>
+                    <div className="space-y-2">
                       <div className="text-center mb-2">
                           <span className="font-medium text-brand-blue">Welcome, {user.name}!</span>
                       </div>
+                      {!user.isAdmin && <a href="#/dashboard" onClick={() => handleNavClick('/dashboard')} className="w-full text-center block bg-gray-100 text-gray-600 font-bold py-2 px-4 rounded-lg hover:bg-gray-200 transition-all">My Dashboard</a>}
+                      <a href="#/my-submissions" onClick={() => handleNavClick('/my-submissions')} className="w-full text-center block bg-gray-100 text-gray-600 font-bold py-2 px-4 rounded-lg hover:bg-gray-200 transition-all">
+                          My Submissions
+                      </a>
                       <a href="#/submit-product" onClick={() => handleNavClick('/submit-product')} className="w-full text-center block bg-brand-accent text-brand-blue font-bold py-2 px-4 rounded-lg hover:opacity-90 transition-all">
                           Submit Product
                       </a>
                        <button onClick={() => { onLogout(); closeMenu(); }} className="w-full text-center block bg-gray-100 text-gray-600 font-bold py-2 px-4 rounded-lg hover:bg-gray-200 transition-all">
                           Logout
                       </button>
-                    </>
+                    </div>
                   ) : (
                     <div className="grid grid-cols-2 gap-2">
                       <a href="#/login" onClick={() => handleNavClick('/login')} className="w-full text-center block bg-gray-100 text-gray-600 font-bold py-2 px-4 rounded-lg hover:bg-gray-200 transition-all">
@@ -165,6 +176,13 @@ const Header: React.FC<HeaderProps> = ({ categories, user, onLogout }) => {
 
               <nav className="flex-grow p-4 overflow-y-auto">
                   <ul>
+                      {user?.isAdmin && (
+                        <li>
+                          <a href="#/admin" onClick={() => handleNavClick('/admin')} className="w-full flex items-center justify-between text-left py-2 px-2 rounded-lg hover:bg-gray-100 font-semibold text-lg text-red-600">
+                            Admin Panel
+                          </a>
+                        </li>
+                      )}
                       <li>
                           <button onClick={() => setIsProductsSubmenuOpen(!isProductsSubmenuOpen)} className="w-full flex items-center justify-between text-left py-2 px-2 rounded-lg hover:bg-gray-100 font-semibold text-lg text-brand-blue">
                               Products

@@ -3,6 +3,7 @@
 export interface User {
   name: string;
   email: string;
+  isAdmin?: boolean;
 }
 
 export interface Review {
@@ -38,4 +39,15 @@ export interface Product {
   upvotes: number;
   deal?: Deal;
   gallery: string[];
+  status?: 'pending' | 'approved' | 'rejected';
+  vendorId?: string;
+  madeIn?: string;
+}
+
+export interface Subscription {
+  subscriptionId: string;
+  userId: string; // Corresponds to user.email
+  productId: string; // Corresponds to product.id
+  purchaseDate: string; // ISO date string
+  expiryDate: string; // ISO date string
 }

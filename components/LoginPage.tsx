@@ -11,8 +11,13 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Simulate a successful login
-        const mockUser: User = { name: email.split('@')[0], email: email };
+        // Simulate a successful login and check for admin user
+        const isAdmin = email.toLowerCase() === 'admin@realpick.com';
+        const mockUser: User = { 
+            name: email.split('@')[0], 
+            email: email,
+            isAdmin: isAdmin
+        };
         onLogin(mockUser);
     };
 
