@@ -51,7 +51,17 @@ const App: React.FC = () => {
   
   const handleLogin = (user: User) => {
     setCurrentUser(user);
-    window.location.hash = '#/';
+    
+    // After login, check for a redirect path in the hash query params
+    const params = new URLSearchParams(window.location.hash.split('?')[1]);
+    const redirectPath = params.get('redirect');
+
+    if (redirectPath) {
+        window.location.hash = `#${decodeURIComponent(redirectPath)}`;
+    } else {
+        // Default redirect to homepage
+        window.location.hash = '#/';
+    }
   };
 
   const handleLogout = () => {
@@ -140,9 +150,15 @@ const App: React.FC = () => {
       )
     );
   };
+  
+  // Helper to handle redirects for protected routes
+  // FIX: Changed return type from JSX.Element to React.ReactElement to resolve "Cannot find namespace 'JSX'" error.
+  const redirectToLogin = (fromPath: string): React.ReactElement => {
+      window.location.hash = `#/login?redirect=${encodeURIComponent(fromPath)}`;
+      return <LoginPage onLogin={handleLogin} />;
+  };
 
-
-  const path = hash.substring(1); // remove leading #
+  const path = hash.split('?')[0].substring(1); // remove leading # and query params
 
   const approvedProducts = products.filter(p => p.status === 'approved');
   const allCategories = [...new Set(approvedProducts.flatMap(p => p.categories))].sort();
@@ -170,15 +186,13 @@ const App: React.FC = () => {
     if (currentUser) {
       content = <SubmitProductPage onSubmit={handleProductSubmit} />;
     } else {
-      window.location.hash = '#/login';
-      content = <LoginPage onLogin={handleLogin} />;
+      content = redirectToLogin('/submit-product');
     }
   } else if (path === '/my-submissions') {
     if (currentUser) {
       content = <ProfilePage user={currentUser} products={products} onUpdateProfile={handleProfileUpdate} />;
     } else {
-      window.location.hash = '#/login';
-      content = <LoginPage onLogin={handleLogin} />;
+      content = redirectToLogin('/my-submissions');
     }
   } else if (path === '/dashboard') {
       if (currentUser && !currentUser.isAdmin) {
@@ -189,8 +203,7 @@ const App: React.FC = () => {
         content = <HomePage products={products} onUpvote={handleUpvote} />;
       }
       else {
-        window.location.hash = '#/login';
-        content = <LoginPage onLogin={handleLogin} />;
+        content = redirectToLogin('/dashboard');
       }
   } else if (path === '/admin') {
       if (currentUser?.isAdmin) {
