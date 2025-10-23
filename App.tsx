@@ -10,6 +10,11 @@ import SignupPage from './components/SignupPage';
 import AdminPage from './components/AdminPage';
 import ProfilePage from './components/ProfilePage';
 import BuyerDashboardPage from './components/BuyerDashboardPage';
+import NewsPage from './components/NewsPage';
+import ForumsPage from './components/ForumsPage';
+import SearchPage from './components/SearchPage';
+import ComingSoonPage from './components/ComingSoonPage';
+import ErrorBoundary from './components/ErrorBoundary';
 import { PRODUCTS, SUBSCRIPTIONS } from './constants';
 import type { Product, User, Review, Subscription } from './types';
 
@@ -139,7 +144,8 @@ const App: React.FC = () => {
 
   const path = hash.substring(1); // remove leading #
 
-  const allCategories = [...new Set(products.flatMap(p => p.categories))].sort();
+  const approvedProducts = products.filter(p => p.status === 'approved');
+  const allCategories = [...new Set(approvedProducts.flatMap(p => p.categories))].sort();
 
   let content;
 
@@ -151,8 +157,15 @@ const App: React.FC = () => {
     } else {
       content = <HomePage products={products} onUpvote={handleUpvote} />;
     }
+  } else if (path.startsWith('/search/')) {
+      const query = decodeURIComponent(path.split('/')[2] || '');
+      content = <SearchPage query={query} products={approvedProducts} onUpvote={handleUpvote} />;
   } else if (path === '/products') {
-    content = <ProductsPage products={products.filter(p => p.status === 'approved')} onUpvote={handleUpvote} />;
+    content = <ProductsPage products={approvedProducts} onUpvote={handleUpvote} />;
+  } else if (path === '/news') {
+    content = <NewsPage />;
+  } else if (path === '/forums') {
+    content = <ForumsPage />;
   } else if (path === '/submit-product') {
     if (currentUser) {
       content = <SubmitProductPage onSubmit={handleProductSubmit} />;
@@ -195,9 +208,12 @@ const App: React.FC = () => {
     content = <LoginPage onLogin={handleLogin} />;
   } else if (path === '/signup') {
     content = <SignupPage onSignup={handleLogin} />;
-  }
-  else {
-    content = <HomePage products={products.filter(p => p.status === 'approved')} onUpvote={handleUpvote} />;
+  } else if (path === '/about' || path === '/terms' || path === '/privacy' || path === '/contact') {
+      content = <ComingSoonPage />;
+  } else if (path === '/' || path === '') {
+      content = <HomePage products={approvedProducts} onUpvote={handleUpvote} />;
+  } else {
+      content = <ComingSoonPage />;
   }
 
 
@@ -209,9 +225,14 @@ const App: React.FC = () => {
         onLogout={handleLogout}
       />
       <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {content}
+        <ErrorBoundary>
+          {content}
+        </ErrorBoundary>
       </main>
-      <Footer />
+      <Footer 
+        categories={allCategories}
+        products={approvedProducts}
+      />
     </div>
   );
 };

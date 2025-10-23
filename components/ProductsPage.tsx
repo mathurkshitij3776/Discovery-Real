@@ -9,8 +9,7 @@ interface ProductsPageProps {
 }
 
 const ProductsPage: React.FC<ProductsPageProps> = ({ products, onUpvote }) => {
-  const approvedProducts = products.filter(p => p.status === 'approved');
-  const categories = [...new Set(approvedProducts.flatMap(p => p.categories))].sort();
+  const categories = [...new Set(products.flatMap(p => p.categories))].sort();
 
   return (
     <div className="space-y-12">
@@ -20,7 +19,7 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ products, onUpvote }) => {
       </header>
       
       {categories.map(category => {
-        const productsInCategory = approvedProducts.filter(p => p.categories.includes(category));
+        const productsInCategory = products.filter(p => p.categories.includes(category));
         return (
           <section key={category} id={category.toLowerCase().replace(/\s+/g, '-')}>
             <div className="flex justify-between items-center mb-6">

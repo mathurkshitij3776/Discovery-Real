@@ -1,4 +1,4 @@
-import type { Product, Subscription } from './types';
+import type { Product, Subscription, Article, ForumCategory } from './types';
 
 export const TODAY_LAUNCH_ID = 'craftnote';
 
@@ -170,5 +170,69 @@ export const SUBSCRIPTIONS: Subscription[] = [
     productId: 'flowstate',
     purchaseDate: new Date(new Date().setFullYear(new Date().getFullYear() - 1)).toISOString(),
     expiryDate: new Date(new Date().setDate(new Date().getDate() - 5)).toISOString(),
+  }
+];
+
+
+export const ARTICLES: Article[] = [
+  {
+    id: 1,
+    title: 'The Rise of the Indie Developer: How Small Teams are Building Big Things',
+    excerpt: 'Explore the trend of solo developers and small teams creating successful software products that compete with industry giants. We look at the tools, strategies, and mindset that make it possible.',
+    author: 'Alex Chen',
+    date: '3 days ago',
+    imageUrl: 'https://picsum.photos/id/101/800/600',
+    category: 'Industry Trends',
+  },
+  {
+    id: 2,
+    title: '5 Marketing Tips for Your First SaaS Launch',
+    excerpt: 'Launching your product is just the first step. Learn how to get your first 100 users with these actionable marketing strategies tailored for bootstrapped founders.',
+    author: 'Brenda Smith',
+    date: '1 week ago',
+    imageUrl: 'https://picsum.photos/id/103/800/600',
+    category: 'Marketing',
+  },
+  {
+    id: 3,
+    title: 'Designing for Focus: The minimalist approach to UI/UX',
+    excerpt: 'In a world of digital noise, users crave simplicity. This article dives into the principles of minimalist design and how to apply them to create intuitive, user-friendly software.',
+    author: 'Carlos Gomez',
+    date: '2 weeks ago',
+    imageUrl: 'https://picsum.photos/id/105/800/600',
+    category: 'Design',
+  },
+];
+
+export const FORUM_CATEGORIES: ForumCategory[] = [
+  {
+    id: 1,
+    name: 'General Discussion',
+    description: 'Talk about anything and everything related to indie software and startups.',
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2V10a2 2 0 012-2h8z" />`,
+    topics: [
+      { id: 1, title: 'What are you working on this week?', author: 'Admin', posts: 124, lastPost: '2 min ago' },
+      { id: 2, title: 'Favorite productivity hacks?', author: 'Sarah J.', posts: 32, lastPost: '1 hour ago' },
+    ]
+  },
+  {
+    id: 2,
+    name: 'Product Feedback',
+    description: 'Get feedback on your product, landing page, or idea.',
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-3-5v5m-3-8v8m-3-5v5m-3-8v8M4 4h16" />`,
+    topics: [
+      { id: 3, title: 'Feedback on my new landing page for "CraftNote"', author: 'Mike R.', posts: 15, lastPost: '5 hours ago' },
+      { id: 4, title: 'Is this pricing model fair?', author: 'Jessica P.', posts: 45, lastPost: '1 day ago' },
+    ]
+  },
+  {
+    id: 3,
+    name: 'Marketing & Growth',
+    description: 'Discuss strategies for growing your user base and revenue.',
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />`,
+    topics: [
+      { id: 5, title: 'How I got my first 100 customers', author: 'David L.', posts: 78, lastPost: '2 days ago' },
+      { id: 6, title: 'SEO tips for SaaS websites', author: 'Emily C.', posts: 22, lastPost: '3 days ago' },
+    ]
   }
 ];

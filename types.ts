@@ -51,3 +51,29 @@ export interface Subscription {
   purchaseDate: string; // ISO date string
   expiryDate: string; // ISO date string
 }
+
+export interface Article {
+  id: number;
+  title: string;
+  excerpt: string;
+  author: string;
+  date: string;
+  imageUrl: string;
+  category: string;
+}
+
+export interface ForumTopic {
+  id: number;
+  title: string;
+  author: string;
+  posts: number;
+  lastPost: string;
+}
+
+export interface ForumCategory {
+  id: number;
+  name: string;
+  description: string;
+  icon: string; // SVG path
+  topics: ForumTopic[];
+}

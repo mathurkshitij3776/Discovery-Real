@@ -21,6 +21,7 @@ const Logo: React.FC = () => (
 const Header: React.FC<HeaderProps> = ({ categories, user, onLogout }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProductsSubmenuOpen, setIsProductsSubmenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -41,15 +42,24 @@ const Header: React.FC<HeaderProps> = ({ categories, user, onLogout }) => {
 
   const handleNavClick = (hash: string) => {
     window.location.hash = hash;
+    window.scrollTo(0, 0);
     closeMenu();
   }
+  
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+        handleNavClick(`/search/${encodeURIComponent(searchQuery.trim())}`);
+        setSearchQuery('');
+    }
+  };
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center space-x-8">
-            <a href="#/" aria-label="Back to homepage" className="flex-shrink-0" onClick={() => closeMenu()}>
+            <a href="#/" aria-label="Back to homepage" className="flex-shrink-0" onClick={() => handleNavClick('/')}>
               <Logo />
             </a>
             <nav className="hidden md:flex items-center space-x-6">
@@ -76,6 +86,8 @@ const Header: React.FC<HeaderProps> = ({ categories, user, onLogout }) => {
                   </div>
                 </div>
               </div>
+               <a href="#/news" className="text-gray-600 hover:text-brand-blue font-semibold transition-colors">News</a>
+               <a href="#/forums" className="text-gray-600 hover:text-brand-blue font-semibold transition-colors">Forums</a>
               {user?.isAdmin && (
                 <a href="#/admin" className="text-red-600 hover:text-red-800 font-semibold transition-colors flex items-center">
                   Admin
@@ -86,10 +98,22 @@ const Header: React.FC<HeaderProps> = ({ categories, user, onLogout }) => {
           
           <div className="flex items-center">
             <div className="hidden md:flex md:items-center space-x-4">
+               <form onSubmit={handleSearch} className="relative">
+                  <input 
+                      type="search" 
+                      placeholder="Search products..." 
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-48 border-gray-300 rounded-lg shadow-sm text-sm focus:ring-brand-teal focus:border-brand-teal"
+                  />
+                  <button type="submit" className="absolute inset-y-0 right-0 flex items-center pr-3" aria-label="Search">
+                      <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                  </button>
+              </form>
               {user ? (
                 <>
-                  <span className="text-sm text-gray-600">Welcome, {user.name}!</span>
-                  {!user.isAdmin && <a href="#/dashboard" className="text-sm text-gray-500 hover:text-brand-blue font-semibold">My Dashboard</a>}
                   <a href="#/my-submissions" className="text-sm text-gray-500 hover:text-brand-blue font-semibold">My Submissions</a>
                   <button onClick={onLogout} className="text-sm text-gray-500 hover:text-brand-blue font-semibold">Logout</button>
                   <a href="#/submit-product" className="bg-brand-accent text-brand-blue font-bold py-2 px-5 rounded-lg hover:opacity-90 transition-all text-sm">
@@ -164,14 +188,20 @@ const Header: React.FC<HeaderProps> = ({ categories, user, onLogout }) => {
               </div>
 
               <div className="p-4 border-t">
-                  <div className="relative">
-                      <input type="search" placeholder="Search..." className="w-full pl-10 pr-4 py-2 border rounded-lg" />
-                      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <form onSubmit={handleSearch} className="relative">
+                      <input 
+                        type="search" 
+                        placeholder="Search..." 
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full pl-10 pr-4 py-2 border rounded-lg" 
+                       />
+                      <button type="submit" className="absolute inset-y-0 left-0 flex items-center pl-3" aria-label="Search">
                           <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                           </svg>
-                      </div>
-                  </div>
+                      </button>
+                  </form>
               </div>
 
               <nav className="flex-grow p-4 overflow-y-auto">
@@ -200,15 +230,13 @@ const Header: React.FC<HeaderProps> = ({ categories, user, onLogout }) => {
                           )}
                       </li>
                       <li>
-                          <a href="#" className="w-full flex items-center justify-between text-left py-2 px-2 rounded-lg hover:bg-gray-100 font-semibold text-lg text-brand-blue">
+                          <a href="#/news" onClick={() => handleNavClick('/news')} className="w-full flex items-center justify-between text-left py-2 px-2 rounded-lg hover:bg-gray-100 font-semibold text-lg text-brand-blue">
                             News
-                            <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" /></svg>
                           </a>
                       </li>
                        <li>
-                          <a href="#" className="w-full flex items-center justify-between text-left py-2 px-2 rounded-lg hover:bg-gray-100 font-semibold text-lg text-brand-blue">
+                          <a href="#/forums" onClick={() => handleNavClick('/forums')} className="w-full flex items-center justify-between text-left py-2 px-2 rounded-lg hover:bg-gray-100 font-semibold text-lg text-brand-blue">
                             Forums
-                             <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" /></svg>
                           </a>
                       </li>
                   </ul>
