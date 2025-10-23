@@ -18,7 +18,8 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ products, onUpvote }) => {
         <p className="mt-2 text-lg text-gray-600">Browse our curated collection of indie software by category.</p>
       </header>
       
-      {categories.map(category => {
+      {/* FIX: Add explicit type for 'category' to resolve 'toLowerCase' on 'unknown' type error. */}
+      {categories.map((category: string) => {
         const productsInCategory = products.filter(p => p.categories.includes(category));
         return (
           <section key={category} id={category.toLowerCase().replace(/\s+/g, '-')}>
